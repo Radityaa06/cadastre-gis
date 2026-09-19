@@ -1,0 +1,6 @@
+{
+  "name": "DharNav — Cadastral Digital Twin & Drone AI Intelligence",
+  "description": "DharNav transforms cadastral mapping into an interactive spatial digital twin with AI self-verification loops, real-time what-if construction simulations, drone orthomosaic parcel boundary extraction, and live GPS Google Maps navigation.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
