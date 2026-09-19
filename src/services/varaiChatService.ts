@@ -32,6 +32,56 @@ export interface VaraiChatHistoryItem {
   content: string;
 }
 
+type VaraiLanguage = 'en' | 'hi' | 'te' | 'ta';
+
+function detectVaraiLanguage(prompt: string): VaraiLanguage {
+  if (/[\u0900-\u097F]/u.test(prompt)) return 'hi';
+  if (/[\u0C00-\u0C7F]/u.test(prompt)) return 'te';
+  if (/[\u0B80-\u0BFF]/u.test(prompt)) return 'ta';
+  return 'en';
+}
+
+function localizeFallbackResult(result: VaraiChatResult, language: VaraiLanguage): VaraiChatResult {
+  if (language === 'en') return result;
+
+  const copy = {
+    hi: {
+      found: (count: number) => `${count} मिलान वाले पार्सल मिले।`,
+      none: 'आपके प्रश्न से कोई पार्सल नहीं मिला।',
+      details: 'मिलान वाले पार्सल:',
+      code: 'पार्सल',
+      reason: 'कारण',
+      greeting: 'नमस्ते! मैं DharNav का VARAI.ai कैडस्ट्रल GIS सहायक हूँ।',
+    },
+    te: {
+      found: (count: number) => `${count} సరిపోలిన పార్సెల్‌లు కనుగొనబడ్డాయి.`,
+      none: 'మీ ప్రశ్నకు సరిపోయే పార్సెల్‌లు కనుగొనబడలేదు.',
+      details: 'సరిపోలిన పార్సెల్‌లు:',
+      code: 'పార్సెల్',
+      reason: 'కారణం',
+      greeting: 'నమస్కారం! నేను DharNav VARAI.ai కాడాస్ట్రల్ GIS సహాయకుడిని.',
+    },
+    ta: {
+      found: (count: number) => `${count} பொருந்தும் பார்சல்கள் கண்டறியப்பட்டன.`,
+      none: 'உங்கள் கேள்விக்கு பொருந்தும் பார்சல்கள் எதுவும் இல்லை.',
+      details: 'பொருந்தும் பார்சல்கள்:',
+      code: 'பார்சல்',
+      reason: 'காரணம்',
+      greeting: 'வணக்கம்! நான் DharNav VARAI.ai காடாஸ்ட்ரல் GIS உதவியாளர்.',
+    },
+  }[language];
+
+  const reply = result.matchCount > 0
+    ? `${copy.found(result.matchCount)}\n\n${copy.details}\n${result.matchingParcels
+        .map((parcel) => `• ${copy.code}: ${parcel.code} (${parcel.acres} acres) — ${copy.reason}: ${parcel.reason}`)
+        .join('\n')}`
+    : result.reply.toLowerCase().includes('hello') || result.reply.toLowerCase().includes('welcome')
+      ? copy.greeting
+      : copy.none;
+
+  return { ...result, reply };
+}
+
 /**
  * Intelligent deterministic GIS query parser used when GEMINI_API_KEY is not configured
  * or as a robust fallback/verifier.
@@ -742,10 +792,11 @@ export async function queryVaraiChat(
   activeTab?: string
 ): Promise<VaraiChatResult> {
   const apiKey = process.env.GEMINI_API_KEY;
+  const responseLanguage = detectVaraiLanguage(userPrompt);
 
   // If no valid API key is configured (or if it's the default placeholder), serve instantly via local engine
   if (!apiKey || apiKey === 'MY_GEMINI_API_KEY' || apiKey.startsWith('MY_') || apiKey.trim() === '') {
-    return localGisQueryEngine(userPrompt, parcels);
+    return localizeFallbackResult(localGisQueryEngine(userPrompt, parcels), responseLanguage);
   }
 
   try {
@@ -798,6 +849,7 @@ Your job:
    - Provide clear, explicit reasons why each parcel matched
    - Set action type to "filter" or "highlight" with filterActive: true
 5. If no parcels match, state that 0 parcels matched honestly (matchCount: 0, matchingParcels: []).
+6. Detect the language of the latest user input. If it is Hindi (Devanagari), Telugu, or Tamil, write the entire "reply" and every "reason" in that same language. Preserve parcel IDs, codes, numbers, acreage, and official cadastral terms exactly. Use English only for codes or terms that have no safe translation. If the input is English, respond in English.
 
 Output strictly valid JSON with this exact schema:
 {
@@ -832,6 +884,8 @@ ${JSON.stringify(gisContextSummary, null, 2)}
 
 User Input:
 "${userPrompt}"
+
+Response language: ${responseLanguage === 'hi' ? 'Hindi' : responseLanguage === 'te' ? 'Telugu' : responseLanguage === 'ta' ? 'Tamil' : 'English'}
 `;
 
     const contents: any[] = [];
@@ -876,6 +930,6 @@ User Input:
     };
   } catch (error) {
     console.warn('Gemini VARAI.ai call encountered an issue, falling back to local GIS engine:', error);
-    return localGisQueryEngine(userPrompt, parcels);
+    return localizeFallbackResult(localGisQueryEngine(userPrompt, parcels), responseLanguage);
   }
 }

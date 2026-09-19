@@ -509,7 +509,7 @@ Try asking me a question below or pick a quick action!`,
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Ask VARAI.ai: 'Filter parcels with deed disputes', 'Show M-2 industrial > 3 ac'..."
+            placeholder="Ask VARAI.ai in English, हिन्दी, తెలుగు, or தமிழ்..."
             disabled={isLoading}
             className="flex-1 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-100/80 focus:bg-white text-xs text-slate-800 placeholder-slate-400 rounded-xl border border-slate-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition-all font-medium"
           />
