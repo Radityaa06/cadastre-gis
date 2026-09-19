@@ -35,6 +35,8 @@ jobs:
         run: cp index.source.html index.html
 
       - name: Build
+        env:
+          VITE_API_URL: https://cadastre-gis-r06d.onrender.com
         run: npm run build
 
       - name: Upload Pages artifact
