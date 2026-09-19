@@ -32,7 +32,7 @@ export interface VaraiChatHistoryItem {
   content: string;
 }
 
-type VaraiLanguage = 'en' | 'hi' | 'te' | 'ta';
+export type VaraiLanguage = 'en' | 'hi' | 'te' | 'ta';
 
 function detectVaraiLanguage(prompt: string): VaraiLanguage {
   if (/[\u0900-\u097F]/u.test(prompt)) return 'hi';
@@ -792,10 +792,11 @@ export async function queryVaraiChat(
   userPrompt: string,
   history: VaraiChatHistoryItem[],
   parcels: CadastralParcel[],
-  activeTab?: string
+  activeTab?: string,
+  preferredLanguage?: VaraiLanguage
 ): Promise<VaraiChatResult> {
   const apiKey = process.env.GEMINI_API_KEY;
-  const responseLanguage = detectVaraiLanguage(userPrompt);
+  const responseLanguage = preferredLanguage || detectVaraiLanguage(userPrompt);
 
   // If no valid API key is configured (or if it's the default placeholder), serve instantly via local engine
   if (!apiKey || apiKey === 'MY_GEMINI_API_KEY' || apiKey.startsWith('MY_') || apiKey.trim() === '') {

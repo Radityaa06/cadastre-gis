@@ -56,7 +56,7 @@ async function startServer() {
   // VARAI.ai Cadastral GIS & Spatial Intelligence Chat Endpoint
   app.post('/api/varai/chat', async (req, res) => {
     try {
-      const { message, history, parcels, activeTab } = req.body;
+      const { message, history, parcels, activeTab, preferredLanguage } = req.body;
       if (!message || typeof message !== 'string') {
         return res.status(400).json({ error: 'message string is required.' });
       }
@@ -66,7 +66,8 @@ async function startServer() {
         message,
         Array.isArray(history) ? history : [],
         parcelsList,
-        activeTab || 'google-maps'
+        activeTab || 'google-maps',
+        ['en', 'hi', 'te', 'ta'].includes(preferredLanguage) ? preferredLanguage : undefined
       );
 
       res.json({ success: true, data: result });

@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { CadastralParcel, VaraiChatMessage, VaraiMatchingParcelItem } from '../types';
 import { apiUrl } from '../services/api';
+import type { VaraiLanguage } from '../services/varaiChatService';
 
 interface VaraiChatDrawerProps {
   isOpen: boolean;
@@ -80,6 +81,7 @@ Try asking me a question below or pick a quick action!`,
   ]);
 
   const [inputMessage, setInputMessage] = useState('');
+  const [preferredLanguage, setPreferredLanguage] = useState<VaraiLanguage>('en');
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -128,6 +130,7 @@ Try asking me a question below or pick a quick action!`,
           history: historyPayload,
           parcels,
           activeTab,
+          preferredLanguage,
         }),
       });
 
@@ -503,6 +506,29 @@ Try asking me a question below or pick a quick action!`,
         }}
         className="p-3 bg-white border-t border-slate-200 rounded-b-2xl sm:rounded-b-3xl"
       >
+        <div className="mb-2 flex items-center gap-1.5 overflow-x-auto">
+          {([
+            ['en', 'English'],
+            ['hi', 'हिन्दी'],
+            ['te', 'తెలుగు'],
+            ['ta', 'தமிழ்'],
+          ] as const).map(([language, label]) => (
+            <button
+              key={language}
+              type="button"
+              onClick={() => setPreferredLanguage(language)}
+              disabled={isLoading}
+              className={`whitespace-nowrap rounded-lg border px-2 py-1 text-[10px] font-bold transition-colors ${
+                preferredLanguage === language
+                  ? 'border-indigo-200 bg-indigo-50 text-indigo-700'
+                  : 'border-slate-200 bg-white text-slate-500 hover:border-indigo-200 hover:text-indigo-600'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+          <span className="ml-auto whitespace-nowrap text-[10px] text-slate-400">Response language</span>
+        </div>
         <div className="flex items-center gap-2">
           <input
             ref={inputRef}
