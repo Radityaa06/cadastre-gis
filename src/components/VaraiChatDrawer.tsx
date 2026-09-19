@@ -22,6 +22,7 @@ import {
   Eye
 } from 'lucide-react';
 import { CadastralParcel, VaraiChatMessage, VaraiMatchingParcelItem } from '../types';
+import { apiUrl } from '../services/api';
 
 interface VaraiChatDrawerProps {
   isOpen: boolean;
@@ -119,7 +120,7 @@ Try asking me a question below or pick a quick action!`,
         content: m.text,
       }));
 
-      const response = await fetch('/api/varai/chat', {
+      const response = await fetch(apiUrl('/api/varai/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

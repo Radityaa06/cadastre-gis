@@ -61,6 +61,7 @@ import { DeedRectificationPetitionModal } from './components/DeedRectificationPe
 import { VaraiChatDrawer } from './components/VaraiChatDrawer';
 import { ValuationSuiteModal, ValuationSuiteTab } from './components/calculators/ValuationSuiteModal';
 import { PremiumLockedFeaturesModal } from './components/PremiumLockedFeaturesModal';
+import { apiUrl } from './services/api';
 
 export default function App() {
   // Navigation Tabs: 'home' | 'digital-twin' | 'dharnav-loop' | 'drone-images' | 'google-maps'
@@ -185,7 +186,7 @@ export default function App() {
 
     try {
       setAnalysisStatusText('Running Gemini AI Vision for cadastral boundaries & DharNav self-check...');
-      const response = await fetch('/api/drone/analyze', {
+      const response = await fetch(apiUrl('/api/drone/analyze'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

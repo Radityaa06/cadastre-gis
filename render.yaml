@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: cadastre-gis
+    runtime: node
+    plan: free
+    buildCommand: npm ci && cp index.source.html index.html && npm run build
+    startCommand: npm start
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: VITE_GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        value: https://radityaa06.github.io/cadastre-gis

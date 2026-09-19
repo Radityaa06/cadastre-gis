@@ -25,3 +25,7 @@ The static frontend is deployed to:
 https://radityaa06.github.io/cadastre-gis/
 
 GitHub Pages cannot run the Express API used by the drone analysis and VARAI chat features. Those features require the Node server started with `npm run dev` or `npm start`.
+
+## Full-stack deployment
+
+The included [`render.yaml`](./render.yaml) deploys the Express API and production frontend to Render. Create a Render Blueprint from this repository, then set `GEMINI_API_KEY` and `VITE_GOOGLE_MAPS_API_KEY` in the service environment. The Render URL can be used as the full-stack shareable URL.
