@@ -1,14 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 import { analyzeDroneImageWithGemini } from './src/services/geminiDroneService.ts';
 import { queryVaraiChat } from './src/services/varaiChatService.ts';
 import { INITIAL_SAMPLE_PARCELS } from './src/data/dharNavVerificationData.ts';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
