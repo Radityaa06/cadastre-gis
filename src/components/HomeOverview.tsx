@@ -10,7 +10,6 @@ import {
   FileCheck, 
   FileText, 
   HardDrive, 
-  Layers, 
   Navigation, 
   Plane, 
   Repeat, 
@@ -19,8 +18,6 @@ import {
   Sparkles, 
   Sun, 
   Wifi,
-  Radio,
-  TrendingUp,
   Activity
 } from 'lucide-react';
 import { SAMPLE_DRONE_IMAGES } from '../data/sampleCadastres';
@@ -96,49 +93,6 @@ export const HomeOverview: React.FC<HomeOverviewProps> = ({
 
   return (
     <div className="space-y-4 animate-in fade-in duration-150 font-sans">
-      {/* Executive Enterprise Metric & Trust Ribbon */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
-        <div className="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 shrink-0">
-            <Radio className="w-4 h-4 text-indigo-600 animate-pulse" />
-          </div>
-          <div>
-            <div className="text-[10px] uppercase font-extrabold tracking-wider text-slate-600">RTK Precision</div>
-            <div className="text-sm font-black text-slate-900 font-mono">99.4% IoU Fixed</div>
-          </div>
-        </div>
-
-        <div className="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shrink-0">
-            <Layers className="w-4 h-4 text-emerald-600" />
-          </div>
-          <div>
-            <div className="text-[10px] uppercase font-extrabold tracking-wider text-slate-600">Cataloged Lots</div>
-            <div className="text-sm font-black text-slate-900 font-mono">24.6 ac Indexed</div>
-          </div>
-        </div>
-
-        <div className="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
-            <Scale className="w-4 h-4 text-amber-600" />
-          </div>
-          <div>
-            <div className="text-[10px] uppercase font-extrabold tracking-wider text-slate-600">Deed Reconciled</div>
-            <div className="text-sm font-black text-slate-900 font-mono">Khasra #142 Sync</div>
-          </div>
-        </div>
-
-        <div className="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-600 shrink-0">
-            <TrendingUp className="w-4 h-4 text-cyan-600" />
-          </div>
-          <div>
-            <div className="text-[10px] uppercase font-extrabold tracking-wider text-slate-600">Total Valuation</div>
-            <div className="text-sm font-black text-indigo-700 font-mono">$48.2M Assessed</div>
-          </div>
-        </div>
-      </div>
-
       {/* DUAL EXECUTIVE WORKSPACE LAUNCHPAD */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
         {/* WORKSPACE 1: UPLOAD DRONE ORTHOMOSAIC & DIGITAL TWIN */}
