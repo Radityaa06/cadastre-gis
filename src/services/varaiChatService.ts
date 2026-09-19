@@ -51,6 +51,7 @@ function localizeFallbackResult(result: VaraiChatResult, language: VaraiLanguage
       details: 'मिलान वाले पार्सल:',
       code: 'पार्सल',
       reason: 'कारण',
+      matched: 'आपके GIS मानदंड से मेल खाता है',
       greeting: 'नमस्ते! मैं DharNav का VARAI.ai कैडस्ट्रल GIS सहायक हूँ।',
     },
     te: {
@@ -59,6 +60,7 @@ function localizeFallbackResult(result: VaraiChatResult, language: VaraiLanguage
       details: 'సరిపోలిన పార్సెల్‌లు:',
       code: 'పార్సెల్',
       reason: 'కారణం',
+      matched: 'మీ GIS ప్రమాణాలకు సరిపోతుంది',
       greeting: 'నమస్కారం! నేను DharNav VARAI.ai కాడాస్ట్రల్ GIS సహాయకుడిని.',
     },
     ta: {
@@ -67,13 +69,14 @@ function localizeFallbackResult(result: VaraiChatResult, language: VaraiLanguage
       details: 'பொருந்தும் பார்சல்கள்:',
       code: 'பார்சல்',
       reason: 'காரணம்',
+      matched: 'உங்கள் GIS அளவுகோலுடன் பொருந்துகிறது',
       greeting: 'வணக்கம்! நான் DharNav VARAI.ai காடாஸ்ட்ரல் GIS உதவியாளர்.',
     },
   }[language];
 
   const reply = result.matchCount > 0
     ? `${copy.found(result.matchCount)}\n\n${copy.details}\n${result.matchingParcels
-        .map((parcel) => `• ${copy.code}: ${parcel.code} (${parcel.acres} acres) — ${copy.reason}: ${parcel.reason}`)
+        .map((parcel) => `• ${copy.code}: ${parcel.code} (${parcel.acres} acres) — ${copy.reason}: ${copy.matched}`)
         .join('\n')}`
     : result.reply.toLowerCase().includes('hello') || result.reply.toLowerCase().includes('welcome')
       ? copy.greeting
